@@ -56,7 +56,8 @@ public:
 	// this will store the instantiated hud
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "HUD")
 	UUserWidget* HUD;
-
+	UFUNCTION()
+	void Teleport(FVector teleportLocation);
 
 
 protected:

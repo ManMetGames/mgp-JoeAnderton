@@ -35,14 +35,12 @@ AFT_ReloadingAndAmmoCharacter::AFT_ReloadingAndAmmoCharacter()
 	Mesh1P->CastShadow = false;
 	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
-
 }
 
 void AFT_ReloadingAndAmmoCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
-
 	// initialise the hud, we can activate a HUD here but we will do a seperate focus on this
 	/*if (HUDType)
 	{
@@ -102,4 +100,8 @@ void AFT_ReloadingAndAmmoCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AFT_ReloadingAndAmmoCharacter::Teleport(FVector teleportLocation) {
+	SetActorLocation(FVector(teleportLocation));
 }
