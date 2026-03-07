@@ -23,6 +23,7 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 
 void UTP_WeaponComponent::Fire()
 {
+	Character->Teleport(FVector(500,500,500));
 	if (AmmoInClip <= 0)
 	{
 		SetNewAmmoType(WeakAmmoType);
