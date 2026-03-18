@@ -23,7 +23,6 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 
 void UTP_WeaponComponent::Fire()
 {
-	Character->Teleport(FVector(500,500,500));
 	if (AmmoInClip <= 0)
 	{
 		SetNewAmmoType(WeakAmmoType);
@@ -130,7 +129,6 @@ bool UTP_WeaponComponent::AttachWeapon(AFT_ReloadingAndAmmoCharacter* TargetChar
 			EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Triggered, this, &UTP_WeaponComponent::Reload);
 		}
 	}
-
 	
 	//UE_LOG(LogTemp, Warning, TEXT("This is where to bind and setup the UI"));
 

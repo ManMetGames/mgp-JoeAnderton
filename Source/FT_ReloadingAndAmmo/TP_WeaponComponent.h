@@ -79,6 +79,7 @@ public:
 public:
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 	void SetNewAmmoType(UAmmoType* NewAmmoType);
+
 protected:
 	/** Ends gameplay for this component. */
 	UFUNCTION()

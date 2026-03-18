@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "AmmoPickUp.h"
+#include "MyActor.h"
 #include "../TP_WeaponComponent.h" 
 
 // Sets default values
@@ -33,6 +34,8 @@ void AAmmoPickUp::Tick(float DeltaTime)
 void AAmmoPickUp::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Ammo PickUp hit by: %s"), *OtherActor->GetName());
+	Targets->teleported = false;
+	Targets->Character = OtherActor;
 	// check if the other actor is a character and if so give them ammo
 	if (OtherActor)
 	{
@@ -56,7 +59,7 @@ void AAmmoPickUp::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Other Actor has a weapon component"));
 			WeaponComp->SetNewAmmoType(AmmoType);
-			Destroy();
+			//Destroy();
 		}
 	}
 }

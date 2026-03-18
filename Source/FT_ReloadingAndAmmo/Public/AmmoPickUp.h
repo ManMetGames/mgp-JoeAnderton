@@ -7,6 +7,8 @@
 #include "AmmoType.h"
 #include "AmmoPickUp.generated.h"
 
+class AMyActor;
+
 UCLASS()
 class FT_RELOADINGANDAMMO_API AAmmoPickUp : public AActor
 {
@@ -22,6 +24,9 @@ public:
 	/** Store our ammo type */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ammo", meta = (AllowPrivateAccess = "true"))
 	UAmmoType* AmmoType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	AMyActor* Targets;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

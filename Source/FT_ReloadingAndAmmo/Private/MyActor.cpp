@@ -17,21 +17,21 @@ AMyActor::AMyActor()
 void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
-	teleport();
 }
 
 // Called every frame
 void AMyActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (Character!=nullptr && !teleported)
+		teleport();
 }
 
 void AMyActor::teleport() {
-	if (Character != nullptr) {
-		Character->SetActorLocation(FVector(1000, 1000, 500));
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("I'M A GENIUS!!!!"));
-	}
+	UE_LOG(LogTemp, Warning, TEXT("Huh"));
+	FVector Destination = Character->GetActorLocation() - FVector(100, 0, 0);
+	Character->SetActorLocation(GetActorLocation());
+	SetActorLocation(Destination);
+	teleported = true;
 }
 

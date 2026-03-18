@@ -28,5 +28,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void teleport();
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	AFT_ReloadingAndAmmoCharacter* Character;
+	AActor* Character;
+	bool teleported = false;
 };
