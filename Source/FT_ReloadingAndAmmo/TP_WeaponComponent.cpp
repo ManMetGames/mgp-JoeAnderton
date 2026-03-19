@@ -60,6 +60,7 @@ void UTP_WeaponComponent::Fire()
 			if (Projectile && AmmoType)
 			{
 				Projectile->setStats(BulletType);
+				Projectile->PlayerPointer = Character;
 				Projectile->Damage = AmmoType->Damage;
 			}
 		}

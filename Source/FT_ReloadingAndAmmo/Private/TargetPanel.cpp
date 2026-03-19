@@ -43,7 +43,7 @@ void ATargetPanel::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (bIsMoving && bIsHit == false)
 	{
-		SetActorLocation(GetActorLocation() + FVector(MoveDirection * 100.0f * DeltaTime, 0.0f, 0.0f));
+		//SetActorLocation(GetActorLocation() + FVector(MoveDirection * 100.0f * DeltaTime, 0.0f, 0.0f));
 
 		// ping pong the target between 
 		if (GetActorLocation().X >= 2850.0f || GetActorLocation().X <= 130.0f)
@@ -58,9 +58,14 @@ void ATargetPanel::Hit(int Damage)
 	UE_LOG(LogTemp, Warning, TEXT("Target hit with damage: %d"), Damage);
 	bIsHit = true;
 	// hide the mesh for a bit
-	TargetMesh->SetVisibility(false);
-	TargetMesh->SetGenerateOverlapEvents(false);
-	TargetMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	//TargetMesh->SetVisibility(false);
+	//TargetMesh->SetGenerateOverlapEvents(false);
+	//TargetMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	if (Player != nullptr) {
+		FVector Destination = Player->GetActorLocation();
+		Player->SetActorLocation(GetActorLocation());
+		SetActorLocation(Destination+FVector(0,0,10));
+	}
 
 	// built in time delay function to reset the target after 3 seconds
 	GetWorldTimerManager().SetTimer(ResetTimerHandle, this, &ATargetPanel::ResetTarget, 3.0f, false);

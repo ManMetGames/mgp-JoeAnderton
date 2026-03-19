@@ -23,6 +23,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components, meta = (AllowPrivateAccess = "true")) 
 	class UStaticMeshComponent* TargetMesh;
+	AActor* Player;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

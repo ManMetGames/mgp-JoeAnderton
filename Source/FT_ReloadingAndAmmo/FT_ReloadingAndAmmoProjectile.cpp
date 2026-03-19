@@ -51,6 +51,7 @@ void AFT_ReloadingAndAmmoProjectile::OnHit(UPrimitiveComponent* HitComp, AActor*
 		ATargetPanel* target = Cast<ATargetPanel>(OtherActor);
 		if (target)
 		{ 
+			target->Player = PlayerPointer;
 			target->Hit(Damage);
 		}
 
