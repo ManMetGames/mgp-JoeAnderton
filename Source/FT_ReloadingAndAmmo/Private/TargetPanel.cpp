@@ -63,8 +63,8 @@ void ATargetPanel::Hit(int Damage)
 	//TargetMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	if (Player != nullptr) {
 		FVector Destination = Player->GetActorLocation();
-		Player->SetActorLocation(GetActorLocation());
-		SetActorLocation(Destination+FVector(0,0,10));
+		Player->SetActorLocation(GetActorLocation()+FVector(0,0,50));
+		SetActorLocation(Destination+FVector(0,0,-50));
 	}
 
 	// built in time delay function to reset the target after 3 seconds
