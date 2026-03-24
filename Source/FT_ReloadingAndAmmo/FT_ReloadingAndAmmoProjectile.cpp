@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+  // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "FT_ReloadingAndAmmoProjectile.h"
 #include "TP_WeaponComponent.h"
@@ -24,10 +24,11 @@ AFT_ReloadingAndAmmoProjectile::AFT_ReloadingAndAmmoProjectile()
 	// Use a ProjectileMovementComponent to govern this projectile's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
 	ProjectileMovement->UpdatedComponent = CollisionComp;
-	ProjectileMovement->InitialSpeed = 3000;
-	ProjectileMovement->MaxSpeed = 3000;
+	ProjectileMovement->InitialSpeed = 6000;
+	ProjectileMovement->MaxSpeed = 6000;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
+	ProjectileMovement->ProjectileGravityScale = 0;
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
@@ -54,12 +55,6 @@ void AFT_ReloadingAndAmmoProjectile::OnHit(UPrimitiveComponent* HitComp, AActor*
 			target->Player = PlayerPointer;
 			target->Hit(Damage);
 		}
-
-		if (OtherComp->IsSimulatingPhysics())
-		{
-			//OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
-			Destroy();
-		}
+		Destroy();
 	}
 }
