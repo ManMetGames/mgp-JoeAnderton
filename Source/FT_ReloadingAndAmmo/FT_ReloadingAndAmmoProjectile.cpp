@@ -58,9 +58,10 @@ void AFT_ReloadingAndAmmoProjectile::OnHit(UPrimitiveComponent* HitComp, AActor*
 			target->Player = PlayerPointer;
 			target->Hit(Damage);
 		}
-		if (ProjectileFX) {
+		if (ProjectileFX && !target) {
+			//spawns the particle FX
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),ProjectileFX,GetActorLocation(), GetActorRotation());
-			Destroy();
 		}
+		Destroy();
 	}
 }
