@@ -5,6 +5,9 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include <TargetPanel.h>
+#include "ProjectileParticleFX.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 AFT_ReloadingAndAmmoProjectile::AFT_ReloadingAndAmmoProjectile() 
 {
@@ -31,7 +34,7 @@ AFT_ReloadingAndAmmoProjectile::AFT_ReloadingAndAmmoProjectile()
 	ProjectileMovement->ProjectileGravityScale = 0;
 
 	// Die after 3 seconds by default
-	InitialLifeSpan = 3.0f;
+	InitialLifeSpan = 0;
 }
 void AFT_ReloadingAndAmmoProjectile::setStats(int BulletType)
 {
@@ -55,6 +58,9 @@ void AFT_ReloadingAndAmmoProjectile::OnHit(UPrimitiveComponent* HitComp, AActor*
 			target->Player = PlayerPointer;
 			target->Hit(Damage);
 		}
-		Destroy();
+		if (ProjectileFX) {
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),ProjectileFX,GetActorLocation(), GetActorRotation());
+			Destroy();
+		}
 	}
 }

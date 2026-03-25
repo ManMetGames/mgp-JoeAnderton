@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UProjectileMovementComponent;
+class UNiagaraSystem;
 
 UCLASS(config=Game)
 class AFT_ReloadingAndAmmoProjectile : public AActor
@@ -41,5 +42,9 @@ public:
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
 	AActor* PlayerPointer;
+
+	//creates bullet impact flash
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TObjectPtr<UNiagaraSystem> ProjectileFX;
 };
 
