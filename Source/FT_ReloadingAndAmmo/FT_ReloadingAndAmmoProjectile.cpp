@@ -8,6 +8,7 @@
 #include "ProjectileParticleFX.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "Engine/StaticMeshActor.h"
 
 AFT_ReloadingAndAmmoProjectile::AFT_ReloadingAndAmmoProjectile() 
 {
@@ -39,8 +40,7 @@ AFT_ReloadingAndAmmoProjectile::AFT_ReloadingAndAmmoProjectile()
 void AFT_ReloadingAndAmmoProjectile::setStats(int BulletType)
 {
 	if (BulletType == 2) {
-		ProjectileMovement->Bounciness = 0;
-		ProjectileMovement->MaxSpeed = 2000;
+		ProjectileMovement->MaxSpeed = 3000;
 	}
 	else if (BulletType == 1){
 		ProjectileMovement->MaxSpeed = 3000;
@@ -53,15 +53,17 @@ void AFT_ReloadingAndAmmoProjectile::OnHit(UPrimitiveComponent* HitComp, AActor*
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		ATargetPanel* target = Cast<ATargetPanel>(OtherActor);
+		AStaticMeshActor* targetBackup = Cast<AStaticMeshActor>(OtherActor);
 		if (target)
-		{ 
+		{
 			target->Player = PlayerPointer;
 			target->Hit(Damage);
+			Destroy();
 		}
-		if (ProjectileFX && !target) {
+		else if (ProjectileFX && targetBackup) {
 			//spawns the particle FX
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),ProjectileFX,GetActorLocation(), GetActorRotation());
-		}
-		Destroy();
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ProjectileFX, GetActorLocation(), GetActorRotation());
+			Destroy();
+		} 
 	}
 }
