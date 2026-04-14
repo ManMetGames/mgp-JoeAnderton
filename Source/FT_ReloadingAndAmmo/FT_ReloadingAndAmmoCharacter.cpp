@@ -43,14 +43,14 @@ void AFT_ReloadingAndAmmoCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 	// initialise the hud, we can activate a HUD here but we will do a seperate focus on this
-	/*if (HUDType)
+	if (HUDType)
 	{
 		HUD = CreateWidget<UUserWidget>(GetWorld(), HUDType);
 		if (HUD)
 		{
 			HUD->AddToViewport();
 		}
-	}*/
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
@@ -105,13 +105,13 @@ void AFT_ReloadingAndAmmoCharacter::Look(const FInputActionValue& Value)
 
 void AFT_ReloadingAndAmmoCharacter::Raycast() {
 	FHitResult* hitResult = new FHitResult();
-	FVector traceStart = FirstPersonCameraComponent->GetComponentLocation();
+	FVector traceStart = FirstPersonCameraComponent->GetComponentLocation()+ FirstPersonCameraComponent->GetRightVector()*15+ FirstPersonCameraComponent->GetUpVector() * -15;
 	FVector forwardVector = FirstPersonCameraComponent->GetForwardVector();
 	FVector traceEnd = (forwardVector * 5000) + traceStart;
 	FCollisionQueryParams* CQP = new FCollisionQueryParams();
 
 	if (GetWorld()->LineTraceSingleByChannel(*hitResult, traceStart, traceEnd, ECC_Visibility, *CQP)) {
-		DrawDebugLine(GetWorld(), traceStart, traceEnd, FColor(255,50,100),true,0);
+		//DrawDebugLine(GetWorld(), traceStart, traceEnd, FColor(0,50,100),true,0,5,50);
 		if (hitResult->GetActor() != nullptr) {  //checks if player is facing a target
 			ATargetPanel* target = Cast<ATargetPanel>(hitResult->GetActor());
 			if (target) {
@@ -120,9 +120,6 @@ void AFT_ReloadingAndAmmoCharacter::Raycast() {
 			else {
 				UE_LOG(LogTemp, Warning, TEXT("Not Nice"));
 			}
-		}
-		else {
-			UE_LOG(LogTemp, Warning, TEXT("SKY"));
 		}
 	}
 }
