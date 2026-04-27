@@ -36,4 +36,10 @@ public:
 	void Hit(int Damage);
 	UFUNCTION()
 	void ResetTarget();
+	UFUNCTION()
+	void ChangeTarget(bool Facing);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBP)
+	UMaterialInterface* OnMaterial;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBP)
+	UMaterialInterface* OffMaterial;
 };

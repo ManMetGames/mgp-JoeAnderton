@@ -51,6 +51,8 @@ void ATargetPanel::Tick(float DeltaTime)
 			MoveDirection *= -1;
 		}
 	}
+
+	ChangeTarget(false);
 }
 
 void ATargetPanel::Hit(int Damage)
@@ -77,4 +79,14 @@ void ATargetPanel::ResetTarget()
 	TargetMesh->SetVisibility(true);
 	TargetMesh->SetGenerateOverlapEvents(true);
 	TargetMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+}
+
+void ATargetPanel::ChangeTarget(bool Facing)
+{
+	if (Facing) {
+		TargetMesh->SetMaterial(0, OnMaterial);
+	}
+	else {
+		TargetMesh->SetMaterial(0, OffMaterial);
+	}
 }

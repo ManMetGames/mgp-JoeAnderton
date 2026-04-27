@@ -111,14 +111,11 @@ void AFT_ReloadingAndAmmoCharacter::Raycast() {
 	FCollisionQueryParams* CQP = new FCollisionQueryParams();
 
 	if (GetWorld()->LineTraceSingleByChannel(*hitResult, traceStart, traceEnd, ECC_Visibility, *CQP)) {
-		//DrawDebugLine(GetWorld(), traceStart, traceEnd, FColor(0,50,100),true,0,5,50);
+		//DrawDebugLine(GetWorld(), traceStart, traceEnd, FColor(0,50,100),false,0,0.5f,1);
 		if (hitResult->GetActor() != nullptr) {  //checks if player is facing a target
 			ATargetPanel* target = Cast<ATargetPanel>(hitResult->GetActor());
 			if (target) {
-				UE_LOG(LogTemp, Warning, TEXT("Nice"));
-			}
-			else {
-				UE_LOG(LogTemp, Warning, TEXT("Not Nice"));
+				target->ChangeTarget(true);
 			}
 		}
 	}
