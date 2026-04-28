@@ -42,4 +42,6 @@ public:
 	UMaterialInterface* OnMaterial;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBP)
 	UMaterialInterface* OffMaterial;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBP)
+	UMaterialInterface* DisabledMaterial; //material used when player cannot teleport to object
 };
