@@ -42,6 +42,7 @@ void AFT_ReloadingAndAmmoCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AFT_ReloadingAndAmmoCharacter::OnHit);
 	// initialise the hud, we can activate a HUD here but we will do a seperate focus on this
 	if (HUDType)
 	{
@@ -116,16 +117,32 @@ void AFT_ReloadingAndAmmoCharacter::Raycast() {
 			ATargetPanel* target = Cast<ATargetPanel>(hitResult->GetActor());
 			if (target) {
 				target->ChangeTarget(true);
+				if (target->GetActorLocation().Z < GetActorLocation().Z - 50 && targetTouched && targetTouched == target) {  //checks to make sure player is not on the target
+					UE_LOG(LogTemplateCharacter, Warning, TEXT("Haha no lol"));
+					target->ChangeTarget(false);
+				}
 			}
 		}
 	}
 }
 
 void AFT_ReloadingAndAmmoCharacter::Teleport(FVector teleportLocation) {
-
+	SetActorLocation(FVector(1000,1000,10000));
 }
 
 void AFT_ReloadingAndAmmoCharacter::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 	Raycast();
+}
+
+void AFT_ReloadingAndAmmoCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
+	{
+		ATargetPanel* target = Cast<ATargetPanel>(OtherActor);
+		if (target)
+		{
+			targetTouched = target;  //detects if and what target the player is stood on and saves it
+		}
+	}
 }

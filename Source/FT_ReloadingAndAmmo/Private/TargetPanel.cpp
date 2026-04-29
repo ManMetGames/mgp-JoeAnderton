@@ -41,6 +41,7 @@ void ATargetPanel::BeginPlay()
 void ATargetPanel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	TargetMesh->SetMaterial(0, OffMaterial);
 	if (bIsMoving && bIsHit == false)
 	{
 		//SetActorLocation(GetActorLocation() + FVector(MoveDirection * 100.0f * DeltaTime, 0.0f, 0.0f));
@@ -52,7 +53,6 @@ void ATargetPanel::Tick(float DeltaTime)
 		}
 	}
 
-	ChangeTarget(false);
 }
 
 void ATargetPanel::Hit(int Damage)
@@ -87,6 +87,6 @@ void ATargetPanel::ChangeTarget(bool Facing)
 		TargetMesh->SetMaterial(0, OnMaterial);
 	}
 	else {
-		TargetMesh->SetMaterial(0, OffMaterial);
+		TargetMesh->SetMaterial(0, DisabledMaterial);
 	}
 }

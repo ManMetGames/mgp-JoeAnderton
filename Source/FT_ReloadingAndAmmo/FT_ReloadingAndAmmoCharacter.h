@@ -13,7 +13,9 @@ class USkeletalMeshComponent;
 class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
+class UCapsuleComponent;
 struct FInputActionValue;
+class ATargetPanel;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -59,6 +61,9 @@ public:
 	UFUNCTION()
 	void Teleport(FVector teleportLocation);
 	void Raycast();
+	ATargetPanel* targetTouched;
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 
 protected:
