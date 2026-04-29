@@ -118,7 +118,6 @@ void AFT_ReloadingAndAmmoCharacter::Raycast() {
 			if (target) {
 				target->ChangeTarget(true);
 				if (target->GetActorLocation().Z < GetActorLocation().Z - 50 && targetTouched && targetTouched == target) {  //checks to make sure player is not on the target
-					UE_LOG(LogTemplateCharacter, Warning, TEXT("Haha no lol"));
 					target->ChangeTarget(false);
 				}
 			}
@@ -143,6 +142,9 @@ void AFT_ReloadingAndAmmoCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* 
 		if (target)
 		{
 			targetTouched = target;  //detects if and what target the player is stood on and saves it
+		}
+		else {
+			targetTouched = nullptr;
 		}
 	}
 }
