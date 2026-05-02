@@ -54,13 +54,13 @@ void AFT_ReloadingAndAmmoProjectile::OnHit(UPrimitiveComponent* HitComp, AActor*
 	{
 		ATargetPanel* target = Cast<ATargetPanel>(OtherActor);
 		AStaticMeshActor* targetBackup = Cast<AStaticMeshActor>(OtherActor);
-		if (target)
+		if (target && target->CurrentState == TargetState::Enabled)
 		{
 			target->Player = PlayerPointer;
 			target->Hit(Damage);
 			Destroy();
 		}
-		else if (ProjectileFX && targetBackup) {
+		else if (ProjectileFX && targetBackup || target->CurrentState == TargetState::Disabled) {
 			//spawns the particle FX
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ProjectileFX, GetActorLocation(), GetActorRotation());
 			Destroy();

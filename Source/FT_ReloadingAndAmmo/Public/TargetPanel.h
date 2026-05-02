@@ -6,6 +6,12 @@
 #include "GameFramework/Actor.h"
 #include "TargetPanel.generated.h"
 
+UENUM(BlueprintType)
+enum class TargetState : uint8 {
+	Disabled UMETA(DisplayName = "DISABLED"),
+	Enabled UMETA(DisplayName = "ENABLED")
+};
+
 UCLASS()
 class FT_RELOADINGANDAMMO_API ATargetPanel : public AActor
 {
@@ -37,11 +43,14 @@ public:
 	UFUNCTION()
 	void ResetTarget();
 	UFUNCTION()
-	void ChangeTarget(bool Facing);
+	void ChangeTarget();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBP)
 	UMaterialInterface* OnMaterial;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBP)
 	UMaterialInterface* OffMaterial;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBP)
 	UMaterialInterface* DisabledMaterial; //material used when player cannot teleport to object
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TargetState CurrentState = TargetState::Enabled;
 };

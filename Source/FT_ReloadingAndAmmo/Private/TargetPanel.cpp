@@ -57,16 +57,25 @@ void ATargetPanel::Tick(float DeltaTime)
 
 void ATargetPanel::Hit(int Damage)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Target hit with damage: %d"), Damage);
 	bIsHit = true;
 	// hide the mesh for a bit
 	//TargetMesh->SetVisibility(false);
 	//TargetMesh->SetGenerateOverlapEvents(false);
 	//TargetMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	if (Player != nullptr) {
-		FVector Destination = Player->GetActorLocation();
-		Player->SetActorLocation(GetActorLocation()+FVector(0,0,50));
-		SetActorLocation(Destination+FVector(0,0,-50));
+		switch (CurrentState)
+		{
+		case TargetState::Enabled:
+			FVector Destination = Player->GetActorLocation();
+			Player->SetActorLocation(GetActorLocation() + FVector(0, 0, 50));
+			SetActorLocation(Destination + FVector(0, 0, -50));
+			break;
+		case TargetState::Disabled:
+			break;
+		default:
+			UE_LOG(LogTemp, Warning, TEXT("ENUMS broke!"));
+			break;
+		}
 	}
 
 	// built in time delay function to reset the target after 3 seconds
@@ -81,12 +90,18 @@ void ATargetPanel::ResetTarget()
 	TargetMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 
-void ATargetPanel::ChangeTarget(bool Facing)
+void ATargetPanel::ChangeTarget()
 {
-	if (Facing) {
+	switch (CurrentState)
+	{
+	case TargetState::Enabled:
 		TargetMesh->SetMaterial(0, OnMaterial);
-	}
-	else {
+		break;
+	case TargetState::Disabled:
 		TargetMesh->SetMaterial(0, DisabledMaterial);
+		break;
+	default:
+		UE_LOG(LogTemp, Warning, TEXT("ENUMS broke!"));
+		break;
 	}
 }

@@ -116,10 +116,13 @@ void AFT_ReloadingAndAmmoCharacter::Raycast() {
 		if (hitResult->GetActor() != nullptr) {  //checks if player is facing a target
 			ATargetPanel* target = Cast<ATargetPanel>(hitResult->GetActor());
 			if (target) {
-				target->ChangeTarget(true);
 				if (target->GetActorLocation().Z < GetActorLocation().Z - 50 && targetTouched && targetTouched == target) {  //checks to make sure player is not on the target
-					target->ChangeTarget(false);
+					target->CurrentState = TargetState::Disabled;
 				}
+				else {
+					target->CurrentState = TargetState::Enabled;
+				}
+				target->ChangeTarget();
 			}
 		}
 	}
