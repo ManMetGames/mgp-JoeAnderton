@@ -61,6 +61,7 @@ public:
 	UFUNCTION()
 	void Teleport(FVector teleportLocation);
 	void Raycast();
+	void RaycastDown();
 	ATargetPanel* targetTouched;
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
