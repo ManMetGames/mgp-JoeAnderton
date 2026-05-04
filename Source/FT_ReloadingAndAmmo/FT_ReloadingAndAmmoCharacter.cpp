@@ -123,7 +123,7 @@ void AFT_ReloadingAndAmmoCharacter::Raycast() {
 
 void AFT_ReloadingAndAmmoCharacter::RaycastDown() {
 	FHitResult* hitResult = new FHitResult();
-	FVector traceStart = GetActorLocation();
+	FVector traceStart = GetActorLocation()-15*GetActorForwardVector();
 	FVector forwardVector = GetActorUpVector();
 	FVector traceEnd = (forwardVector * -5000) + traceStart;
 	FCollisionQueryParams* CQP = new FCollisionQueryParams();

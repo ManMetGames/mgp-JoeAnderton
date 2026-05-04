@@ -39,30 +39,15 @@ void ATargetPanel::BeginPlay()
 
 // Called every frame
 void ATargetPanel::Tick(float DeltaTime)
-{
+{	
 	Super::Tick(DeltaTime);
-	TargetMesh->SetMaterial(0, OffMaterial);
-	if (bIsMoving && bIsHit == false)
-	{
-		//SetActorLocation(GetActorLocation() + FVector(MoveDirection * 100.0f * DeltaTime, 0.0f, 0.0f));
-
-		// ping pong the target between 
-		if (GetActorLocation().X >= 2850.0f || GetActorLocation().X <= 130.0f)
-		{
-			MoveDirection *= -1;
-		}
-	}
-
+	TargetMesh->SetMaterial(0, OffMaterial); //automatically changes material back to default if no raycast
 }
 
-void ATargetPanel::Hit(int Damage)
+void ATargetPanel::Hit()
 {
-	bIsHit = true;
-	// hide the mesh for a bit
-	//TargetMesh->SetVisibility(false);
-	//TargetMesh->SetGenerateOverlapEvents(false);
-	//TargetMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	if (Player != nullptr) {
+		//only teleports the player if the target isn't disabled
 		switch (CurrentState)
 		{
 		case TargetState::Enabled:
@@ -77,21 +62,11 @@ void ATargetPanel::Hit(int Damage)
 			break;
 		}
 	}
-
-	// built in time delay function to reset the target after 3 seconds
-	GetWorldTimerManager().SetTimer(ResetTimerHandle, this, &ATargetPanel::ResetTarget, 3.0f, false);
-}
-
-void ATargetPanel::ResetTarget()
-{
-	bIsHit = false;
-	TargetMesh->SetVisibility(true);
-	TargetMesh->SetGenerateOverlapEvents(true);
-	TargetMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 
 void ATargetPanel::ChangeTarget()
 {
+	//raycast changes the target colour to yellow or red depending if it's enabled or disabled
 	switch (CurrentState)
 	{
 	case TargetState::Enabled:

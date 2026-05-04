@@ -39,9 +39,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION()
-	void Hit(int Damage);
-	UFUNCTION()
-	void ResetTarget();
+	void Hit();
 	UFUNCTION()
 	void ChangeTarget();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBP)

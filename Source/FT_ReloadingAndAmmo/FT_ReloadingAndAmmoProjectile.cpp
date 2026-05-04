@@ -57,7 +57,7 @@ void AFT_ReloadingAndAmmoProjectile::OnHit(UPrimitiveComponent* HitComp, AActor*
 		if (target && target->CurrentState == TargetState::Enabled)
 		{
 			target->Player = PlayerPointer;
-			target->Hit(Damage);
+			target->Hit();
 			Destroy();
 		}
 		else if (ProjectileFX && targetBackup || target->CurrentState == TargetState::Disabled) {
