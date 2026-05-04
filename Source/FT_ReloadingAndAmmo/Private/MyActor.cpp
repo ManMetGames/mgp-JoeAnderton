@@ -17,21 +17,7 @@ AMyActor::AMyActor()
 void AMyActor::BeginPlay()
 {
 	Super::BeginPlay();
-}
 
-// Called every frame
-void AMyActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	if (Character!=nullptr && !teleported)
-		teleport();
-}
-
-void AMyActor::teleport() {
-	UE_LOG(LogTemp, Warning, TEXT("Huh"));
-	FVector Destination = Character->GetActorLocation() - FVector(100, 0, 0);
-	Character->SetActorLocation(GetActorLocation());
-	SetActorLocation(Destination);
-	teleported = true;
+	//This code is unused, I just couldn't figure out how to delete the file
 }
 

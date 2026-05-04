@@ -51,4 +51,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TargetState CurrentState = TargetState::Enabled;
+	/** Sound to play when teleported */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
+	USoundBase* TeleportSound;
 };

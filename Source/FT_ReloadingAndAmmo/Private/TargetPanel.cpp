@@ -3,6 +3,7 @@
 
 #include "TargetPanel.h"
 #include "Components/StaticMeshComponent.h" 
+#include "Kismet/GameplayStatics.h"
 #include "Math/UnrealMathUtility.h"  
 
 // Sets default values
@@ -54,6 +55,10 @@ void ATargetPanel::Hit()
 			FVector Destination = Player->GetActorLocation();
 			Player->SetActorLocation(GetActorLocation() + FVector(0, 0, 50));
 			SetActorLocation(Destination + FVector(0, 0, -50));
+			if (TeleportSound != nullptr)
+			{
+				UGameplayStatics::PlaySoundAtLocation(this, TeleportSound, Player->GetActorLocation());
+			}
 			break;
 		case TargetState::Disabled:
 			break;
