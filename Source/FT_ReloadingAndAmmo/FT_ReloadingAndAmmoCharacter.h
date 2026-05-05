@@ -1,0 +1,94 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "Logging/LogMacros.h"
+#include "Blueprint/UserWidget.h"
+#include "FT_ReloadingAndAmmoCharacter.generated.h"
+
+class UInputComponent;
+class USkeletalMeshComponent;
+class UCameraComponent;
+class UInputAction;
+class UInputMappingContext;
+class UCapsuleComponent;
+struct FInputActionValue;
+class ATargetPanel;
+
+UENUM(BlueprintType)
+enum class ArmedState : uint8 {
+	Unarmed UMETA(DisplayName = "UNARMED"),
+	Armed UMETA(DisplayName = "ARMED")
+};
+
+DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
+
+UCLASS(config=Game)
+class AFT_ReloadingAndAmmoCharacter : public ACharacter
+{
+	GENERATED_BODY()
+
+	/** Pawn mesh: 1st person view (arms; seen only by self) */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
+	USkeletalMeshComponent* Mesh1P;
+
+	/** First person camera */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UCameraComponent* FirstPersonCameraComponent;
+
+	/** Jump Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* JumpAction;
+
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* MoveAction;
+
+public:
+	AFT_ReloadingAndAmmoCharacter();
+
+protected:
+	virtual void BeginPlay();
+
+public:
+		
+	/** Look Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* LookAction;
+	
+	// template of a uuserwidget which will be what we create
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HUD")
+	TSubclassOf<UUserWidget> HUDType;
+	// this will store the instantiated hud
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "HUD")
+	UUserWidget* HUD;
+	void Raycast();
+	void RaycastDown();
+	ATargetPanel* targetTouched;
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	ArmedState NowState = ArmedState::Unarmed;
+
+protected:
+	/** Called for movement input */
+	void Move(const FInputActionValue& Value);
+
+	/** Called for looking input */
+	void Look(const FInputActionValue& Value);
+
+protected:
+	// APawn interface
+	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+	// End of APawn interface
+
+public:
+	/** Returns Mesh1P subobject **/
+	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
+	/** Returns FirstPersonCameraComponent subobject **/
+	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+	void Tick(float DeltaTime) override;
+};
+
