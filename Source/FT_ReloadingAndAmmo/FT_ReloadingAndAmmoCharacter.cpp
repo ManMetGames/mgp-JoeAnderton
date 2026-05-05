@@ -106,6 +106,7 @@ void AFT_ReloadingAndAmmoCharacter::Look(const FInputActionValue& Value)
 
 void AFT_ReloadingAndAmmoCharacter::Raycast() {
 	FHitResult* hitResult = new FHitResult();
+	//raycast starts from the gun and follows a bullet's trajectory
 	FVector traceStart = FirstPersonCameraComponent->GetComponentLocation()+ FirstPersonCameraComponent->GetRightVector()*15+ FirstPersonCameraComponent->GetUpVector() * -15;
 	FVector forwardVector = FirstPersonCameraComponent->GetForwardVector();
 	FVector traceEnd = (forwardVector * 5000) + traceStart;
@@ -115,7 +116,7 @@ void AFT_ReloadingAndAmmoCharacter::Raycast() {
 		if (hitResult->GetActor() != nullptr) {  //checks if player is facing a target
 			ATargetPanel* target = Cast<ATargetPanel>(hitResult->GetActor());
 			if (target) {
-				target->ChangeTarget();
+				target->ChangeTarget(); //switches a target's material
 			}
 		}
 	}
@@ -129,8 +130,9 @@ void AFT_ReloadingAndAmmoCharacter::RaycastDown() {
 	FCollisionQueryParams* CQP = new FCollisionQueryParams();
 	if (GetWorld()->LineTraceSingleByChannel(*hitResult, traceStart, traceEnd, ECC_Visibility, *CQP)) {
 		//DrawDebugLine(GetWorld(), traceStart, traceEnd, FColor(0, 50, 100), false, 0, 0.5f, 1);
-		if (hitResult->GetActor() != nullptr) {  //checks if player is facing a target
+		if (hitResult->GetActor() != nullptr) {
 			ATargetPanel* target = Cast<ATargetPanel>(hitResult->GetActor());
+			//changes a target to disabled if the player is directly above it
 			if (target && target != targetTouched && targetTouched) {
   				targetTouched->CurrentState = TargetState::Enabled;
 			}
@@ -139,23 +141,29 @@ void AFT_ReloadingAndAmmoCharacter::RaycastDown() {
 				targetTouched = target;
 			}
 			else if (targetTouched) {
-				targetTouched->CurrentState = TargetState::Enabled;
+				targetTouched->CurrentState = TargetState::Enabled; //resets previous target if player is no longer above it
 			}
 		}
 	}
 }
 
-void AFT_ReloadingAndAmmoCharacter::Teleport(FVector teleportLocation) {
-	SetActorLocation(FVector(1000,1000,10000));
-}
-
 void AFT_ReloadingAndAmmoCharacter::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-	RaycastDown(); //check for targets underneath the player
-	Raycast(); 
+	RaycastDown(); //check for targets underneath the player 
+	switch (NowState)
+	{
+	case ArmedState::Unarmed:
+		break;
+	case ArmedState::Armed:
+		Raycast();
+		break;
+	default:
+		UE_LOG(LogTemp, Warning, TEXT("Player ENUMS broke!"));
+		break;
+	}
 }
 
 void AFT_ReloadingAndAmmoCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-
+	//unused but I can't figure out how to get rid of it without causing errors
 }

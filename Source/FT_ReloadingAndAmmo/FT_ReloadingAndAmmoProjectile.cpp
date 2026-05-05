@@ -28,23 +28,14 @@ AFT_ReloadingAndAmmoProjectile::AFT_ReloadingAndAmmoProjectile()
 	// Use a ProjectileMovementComponent to govern this projectile's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
 	ProjectileMovement->UpdatedComponent = CollisionComp;
-	ProjectileMovement->InitialSpeed = 6000;
-	ProjectileMovement->MaxSpeed = 6000;
+	ProjectileMovement->InitialSpeed = 4000;
+	ProjectileMovement->MaxSpeed = 4000;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
 	ProjectileMovement->ProjectileGravityScale = 0;
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 0;
-}
-void AFT_ReloadingAndAmmoProjectile::setStats(int BulletType)
-{
-	if (BulletType == 2) {
-		ProjectileMovement->MaxSpeed = 3000;
-	}
-	else if (BulletType == 1){
-		ProjectileMovement->MaxSpeed = 3000;
-	}
 }
 
 void AFT_ReloadingAndAmmoProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -53,10 +44,10 @@ void AFT_ReloadingAndAmmoProjectile::OnHit(UPrimitiveComponent* HitComp, AActor*
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		ATargetPanel* target = Cast<ATargetPanel>(OtherActor);
-		AStaticMeshActor* targetBackup = Cast<AStaticMeshActor>(OtherActor);
+		AStaticMeshActor* targetBackup = Cast<AStaticMeshActor>(OtherActor); //check if the object is a wall
 		if (target && target->CurrentState == TargetState::Enabled)
 		{
-			target->Player = PlayerPointer;
+			target->Player = PlayerPointer; //passes through the player
 			target->Hit();
 			Destroy();
 		}

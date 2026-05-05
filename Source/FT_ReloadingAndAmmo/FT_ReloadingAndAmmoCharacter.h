@@ -17,6 +17,12 @@ class UCapsuleComponent;
 struct FInputActionValue;
 class ATargetPanel;
 
+UENUM(BlueprintType)
+enum class ArmedState : uint8 {
+	Unarmed UMETA(DisplayName = "UNARMED"),
+	Armed UMETA(DisplayName = "ARMED")
+};
+
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
@@ -58,14 +64,13 @@ public:
 	// this will store the instantiated hud
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "HUD")
 	UUserWidget* HUD;
-	UFUNCTION()
-	void Teleport(FVector teleportLocation);
 	void Raycast();
 	void RaycastDown();
 	ATargetPanel* targetTouched;
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	ArmedState NowState = ArmedState::Unarmed;
 
 protected:
 	/** Called for movement input */

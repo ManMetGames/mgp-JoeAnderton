@@ -23,19 +23,6 @@ ATargetPanel::ATargetPanel()
 void ATargetPanel::BeginPlay()
 {
 	Super::BeginPlay();
-	bIsHit = false;
-	// add a random direction for the target to move in if bIsMoving is true
-	if (bIsMoving)
-	{		
-		if (FMath::RandRange(0, 1) == 0)
-		{
-			MoveDirection = 1;
-		}
-		else
-		{
-			MoveDirection = -1;
-		}
-	}
 }
 
 // Called every frame
@@ -53,10 +40,11 @@ void ATargetPanel::Hit()
 		{
 		case TargetState::Enabled:
 			FVector Destination = Player->GetActorLocation();
-			Player->SetActorLocation(GetActorLocation() + FVector(0, 0, 50));
+			Player->SetActorLocation(GetActorLocation() + FVector(0, 0, 50));  //slightly adjusts spawn location to stop spawning in the floor
 			SetActorLocation(Destination + FVector(0, 0, -50));
 			if (TeleportSound != nullptr)
 			{
+				//teleport SFX
 				UGameplayStatics::PlaySoundAtLocation(this, TeleportSound, Player->GetActorLocation());
 			}
 			break;

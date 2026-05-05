@@ -23,18 +23,6 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 
 void UTP_WeaponComponent::Fire()
 {
-	if (AmmoInClip <= 0)
-	{
-		SetNewAmmoType(WeakAmmoType);
-		BulletType = 2;
-		UE_LOG(LogTemp, Warning, TEXT("Weak ammo! Need to reload!"));
-		return;
-	}else
-	{
-		AmmoInClip--;
-		UE_LOG(LogTemp, Warning, TEXT("%d bullets remaining fyi"),AmmoInClip);
-	}
-
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
 		return;
@@ -59,9 +47,7 @@ void UTP_WeaponComponent::Fire()
 			AFT_ReloadingAndAmmoProjectile* Projectile = World->SpawnActor<AFT_ReloadingAndAmmoProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 			if (Projectile && AmmoType)
 			{
-				Projectile->setStats(BulletType);
 				Projectile->PlayerPointer = Character;
-				Projectile->Damage = AmmoType->Damage;
 			}
 		}
 	}
@@ -86,9 +72,7 @@ void UTP_WeaponComponent::Fire()
 
 void UTP_WeaponComponent::Reload()
 {
-	BulletType = 1;
-	SetNewAmmoType(DefaultAmmoType);
-	UE_LOG(LogTemp, Warning, TEXT("Reloading!"));
+	
 }
 
 int UTP_WeaponComponent::GetAmmoInClip()
@@ -131,7 +115,7 @@ bool UTP_WeaponComponent::AttachWeapon(AFT_ReloadingAndAmmoCharacter* TargetChar
 		}
 	}
 	
-	//UE_LOG(LogTemp, Warning, TEXT("This is where to bind and setup the UI"));
+	Character->NowState = ArmedState::Armed;
 
 	return true;
 }
